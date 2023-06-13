@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
+
 import sys
+
 
 from enumeratori import TipKorisnika, TipArtikla
 from korisnik import PoslovniKorisnik, PrivatniKorisnik
@@ -145,6 +147,16 @@ class Window(QtWidgets.QMainWindow):
         self.button_dodaj_korisnika.setText('Dodaj korisnika')
         self.button_dodaj_korisnika.clicked.connect(self.unos_korisnika)
         self.h_layout_button_k.addWidget(self.button_dodaj_korisnika)
+
+        #Skocni prozor za potvrdu unosa korisnika
+        self.popup_potvrda = QtWidgets.QMessageBox(self)
+        self.popup_potvrda.setGeometry(QtCore.QRect(500, 500, 500, 500))
+        self.popup_potvrda.setWindowTitle('Potvrda o unosu korisnika')
+        self.popup_potvrda.setText("Korisnik unesen!")
+        self.popup_potvrda.setIcon(QtWidgets.QMessageBox.Information)
+        self.popup_potvrda.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+
 
         # Button obrisi korisnika
         self.button_obris_korisnika = QtWidgets.QPushButton(self)
@@ -505,8 +517,11 @@ class Window(QtWidgets.QMainWindow):
             self.text_email.setText('')
             self.label_error_korisnik.setText('')
 
+            self.popup_potvrda.exec_()
+
         else:
             self.label_error_korisnik.setText(error_k)
+            #self.popup_potvrda.exec_()
 
     # Brisanje korisnika iz liste
     def obrisi_korisnika(self):
